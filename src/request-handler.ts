@@ -1,19 +1,19 @@
-import { graphqlHTTP } from 'express-graphql'
 import { getEnveloped } from './envelop'
-import type { Request as ExpressRequest, Response as ExpressResponse } from 'express'
+import type { FastifyReply, FastifyRequest } from 'fastify'
 import { v4 as uuidv4 } from 'uuid'
+import { getGraphQLParameters, processRequest, sendResult } from 'graphql-helix'
 
 type Request = {
   requestId: string,
-  body: ExpressRequest['body'],
-  headers: ExpressRequest['headers'],
-  method: ExpressRequest['method'],
-  query: ExpressRequest['query'],
+  body: FastifyRequest['body'],
+  headers: FastifyRequest['headers'],
+  method: FastifyRequest['method'],
+  query: FastifyRequest['query'],
 }
 
-export function requestHandler(
-  req: ExpressRequest,
-  res: ExpressResponse,
+export async function requestHandler(
+  req: FastifyRequest,
+  res: FastifyReply,
   ) {
   const requestId = uuidv4()
 
@@ -25,7 +25,7 @@ export function requestHandler(
     validate,
   } = getEnveloped()
 
-  const request = {
+  const request: Request = {
     requestId,
     body: req.body,
     headers: req.headers,
@@ -33,9 +33,27 @@ export function requestHandler(
     query: req.query,
   }
 
+  // TODO: You can get the content-length out from headers in order to log metrics
 
-  return graphqlHTTP({
-    schema,
-    graphiql: true,
-  })
-} 
+  const { operationName, query, variables } = getGraphQLParameters(request)
+
+  let result
+
+  try {
+    result = await processRequest({
+      contextFactory,
+      execute,
+      parse,
+      schema,
+      validate,
+      operationName,
+      query,
+      request,
+      variables,
+    })
+  } catch (error) {
+    result = error
+  }
+
+  sendResult(result, res.raw)
+}
