@@ -1,2 +1,4 @@
 node_modules
 build
+schema.graphql
+test/generated.ts

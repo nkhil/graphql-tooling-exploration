@@ -6,8 +6,10 @@
   "type": "commonjs",
   "scripts": {
     "clean": "rimraf dist",
+    "build:schema": "ts-node src/scripts/create-schema",
+    "build:test": "graphql-codegen --config ./test/codegen.yml",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --watch",
+    "build": "npm run build:test && tsc",
     "start": "node -r @swc-node/register src/app.ts"
   },
   "keywords": [],
@@ -29,11 +31,17 @@
     "npm": "8.9.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.9.0",
+    "@graphql-codegen/typescript": "^2.7.2",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.2",
+    "@graphql-codegen/typescript-operations": "^2.5.2",
     "@swc-node/register": "^1.5.1",
     "@types/express": "^4.17.13",
     "@types/express-graphql": "^0.9.0",
     "@types/node": "^18.0.3",
     "@types/uuid": "^8.3.4",
-    "rimraf": "^3.0.2"
+    "graphql-codegen": "^0.4.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1"
   }
 }
