@@ -8,7 +8,7 @@
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --watch",
-    "start": "node -r @swc-node/register src/server.ts"
+    "start": "node -r @swc-node/register src/app.ts"
   },
   "keywords": [],
   "author": "",
