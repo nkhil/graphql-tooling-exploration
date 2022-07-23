@@ -1,27 +1,7 @@
-import { builder } from './builder';
-import { Comment, Comments, Post, Posts, User, Users } from './data';
+import { builder } from '../builder';
+import { Comment, Comments, Post, Posts, User, Users } from '../data';
 
-builder.objectType(User, {
-  name: 'User',
-  fields: (t) => ({
-    id: t.exposeID('id'),
-    firstName: t.exposeString('firstName'),
-    lastName: t.exposeString('lastName'),
-    fullName: t.string({
-      resolve: (user) => `${user.firstName} ${user.lastName}`,
-    }),
-    posts: t.field({
-      type: [Post],
-      resolve: (user) => [...Posts.values()].filter((post) => post.authorId === user.id),
-    }),
-    comments: t.field({
-      type: [Comment],
-      resolve: (user) => [...Comments.values()].filter((comment) => comment.authorId === user.id),
-    }),
-  }),
-});
-
-builder.objectType(Post, {
+export const postRef = builder.objectType(Post, {
   name: 'Post',
   fields: (t) => ({
     id: t.exposeID('id'),
@@ -39,7 +19,7 @@ builder.objectType(Post, {
   }),
 });
 
-builder.objectType(Comment, {
+export const commentRef = builder.objectType(Comment, {
   name: 'Comment',
   fields: (t) => ({
     id: t.exposeID('id'),
@@ -58,7 +38,7 @@ builder.objectType(Comment, {
 
 const DEFAULT_PAGE_SIZE = 10;
 
-builder.queryType({
+export const queryRef = builder.queryType({
   fields: (t) => ({
     post: t.field({
       type: Post,
@@ -88,5 +68,3 @@ builder.queryType({
     }),
   }),
 });
-
-export const schema = builder.toSchema({});
