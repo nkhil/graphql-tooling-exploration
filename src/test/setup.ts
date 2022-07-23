@@ -25,7 +25,7 @@ function createContext(): ServiceContext {
   }
 }
 
-export function setupAva() {
+export function setup() {
   const { serial } = test as TestFn<ServiceContext>
 
   test.before('Start the server', async () => {

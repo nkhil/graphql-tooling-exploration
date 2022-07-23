@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
-import { setupAva } from './setup'
+import { setup } from './setup'
 
-const { serial } = setupAva()
+const { serial } = setup()
 
 gql`
   query getUser($userId: ID!) {
