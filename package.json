@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf build",
     "build:schema": "ts-node src/scripts/create-schema",
-    "build:test": "graphql-codegen --config ./src/test/codegen.yml",
+    "build:test": "npm run build:schema && graphql-codegen --config ./src/test/codegen.yml",
     "test": "ava",
     "build": "npm run clean && npm run build:test && tsc",
     "start": "node -r @swc-node/register src/app.ts"
@@ -20,7 +20,6 @@
     "@faker-js/faker": "^7.3.0",
     "@graphql-yoga/node": "^2.11.2",
     "@pothos/core": "^3.12.1",
-    "@sindresorhus/tsconfig": "^3.0.1",
     "fastify": "^4.2.0",
     "graphql": "^15.8.0",
     "graphql-helix": "^1.13.0",
