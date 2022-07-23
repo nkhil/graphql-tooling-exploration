@@ -5,11 +5,11 @@
   "main": "src/server.js",
   "type": "commonjs",
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf build",
     "build:schema": "ts-node src/scripts/create-schema",
-    "build:test": "graphql-codegen --config ./test/codegen.yml",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build:test && tsc",
+    "build:test": "graphql-codegen --config ./src/test/codegen.yml",
+    "test": "ava",
+    "build": "npm run clean && npm run build:test && tsc",
     "start": "node -r @swc-node/register src/app.ts"
   },
   "keywords": [],
@@ -31,6 +31,8 @@
     "npm": "8.9.0"
   },
   "devDependencies": {
+    "@ava/get-port": "^2.0.0",
+    "@ava/typescript": "^3.0.1",
     "@graphql-codegen/cli": "^2.9.0",
     "@graphql-codegen/typescript": "^2.7.2",
     "@graphql-codegen/typescript-graphql-request": "^4.5.2",
@@ -40,7 +42,9 @@
     "@types/express-graphql": "^0.9.0",
     "@types/node": "^18.0.3",
     "@types/uuid": "^8.3.4",
+    "ava": "^4.3.1",
     "graphql-codegen": "^0.4.0",
+    "graphql-request": "^4.3.0",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1"
   }
