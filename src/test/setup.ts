@@ -4,6 +4,7 @@ import server from '../server'
 import { GraphQLClient } from 'graphql-request'
 import { getSdk } from './generated'
 import type { Sdk } from './generated'
+import { getPort } from './get-port'
 
 type ServiceContext = {
   graphql: Sdk,
@@ -13,9 +14,8 @@ async function sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds))
 }
 
-function createContext(): ServiceContext {
-  const portToListenOn = 4000 // TODO: Replace this to use @ava/get-port
-  const graphQlEndpoint = `http://localhost:${portToListenOn}/graphql`
+function createContext(port: number): ServiceContext {
+  const graphQlEndpoint = `http://localhost:${port}/graphql`
 
   const client = new GraphQLClient(graphQlEndpoint)
   const sdk = getSdk(client)
@@ -28,17 +28,25 @@ function createContext(): ServiceContext {
 export function setup() {
   const { serial } = test as TestFn<ServiceContext>
 
-  test.before('Start the server', async () => {
-    await server.listen({ port: 4000 }, error => {
-      if (error !== null) console.log('An error!')
-      console.log('server listening on 4000!')
-    })
-    await sleep(1000)
-  })
+  
+  test.before('Start the server', async (t) => {
+    // Get an available port
+    const availablePort = await getPort()
+    // const availablePort = 4000
 
-  test.before('Add context', async (t) => {
-    const context = createContext()
+    // Create a context + a client
+    const context = createContext(availablePort)
+
+    // Set up a context
     t.context = context
+
+    // Start the server at the available port
+    server.listen({ port: availablePort }, error => {
+      if (error !== null) throw error
+    })
+
+    // Wait for the server to be ready
+    await sleep(1000)
   })
 
   test.after.always('stop service', async () => {

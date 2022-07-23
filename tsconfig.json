@@ -2,7 +2,6 @@
   "include": ["src/**/*"],
   "compilerOptions": {
     // Project options
-    "allowJs": true,
     "incremental": true,
     "lib": [
       "ES2019",
