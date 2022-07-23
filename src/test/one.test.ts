@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import { setup, setupAva } from './setup'
+import { setupAva } from './setup'
 
 const { serial } = setupAva()
 
@@ -12,15 +12,9 @@ gql`
 }
 `
 
-
-serial('Whateever', async (t) => {
-  const { context: { graphql }, startServer } = await setup()
-  await startServer()
-
-  const response = await graphql.getUser({ userId: '10' })
+serial('First test', async (t) => {
+  const response = await t.context.graphql.getUser({ userId: '10' })
   
-  t.is(response.user?.__typename, 'User')
-  t.is(response.user?.firstName, 'George')
-  t.is(response.user?.lastName, 'Finn')
+  t.is(response.user?.firstName, 'Andreanne')
+  t.is(response.user?.lastName, 'Upton')
 })
-
