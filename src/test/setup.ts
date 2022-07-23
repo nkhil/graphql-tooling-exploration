@@ -1,6 +1,5 @@
 import test from 'ava'
 import type { TestFn } from 'ava'
-// import getPort from '@ava/get-port'
 import server from '../server'
 import { GraphQLClient } from 'graphql-request'
 import { getSdk } from './generated'
