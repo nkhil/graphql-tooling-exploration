@@ -1,22 +1,37 @@
 import { builder } from '../builder';
-import { Comment, Comments, Post, Posts, User } from '../data';
 
-export const userRef = builder.objectType(User, {
-  name: 'User',
-  fields: (t) => ({
-    id: t.exposeID('id'),
-    firstName: t.exposeString('firstName'),
-    lastName: t.exposeString('lastName'),
-    fullName: t.string({
-      resolve: (user) => `${user.firstName} ${user.lastName}`,
+type Me = {
+  passportNumber: string,
+  niNumber: string,
+}
+
+const meRef = builder.objectRef<Me>('Me')
+
+builder.objectType(meRef, {
+  fields: t => ({
+    passportNumber: t.field({
+      type: 'String',
+      resolve: (parent) => parent.passportNumber,
     }),
-    posts: t.field({
-      type: [Post],
-      resolve: (user) => [...Posts.values()].filter((post) => post.authorId === user.id),
+    niNumber: t.field({
+      type: 'String',
+      resolve: (parent) => parent.niNumber,
     }),
-    comments: t.field({
-      type: [Comment],
-      resolve: (user) => [...Comments.values()].filter((comment) => comment.authorId === user.id),
-    }),
-  }),
-});
+    firstName: t.field({
+      type: 'String',
+      resolve: async () => Promise.resolve('Nikhil')
+    })
+  })
+})
+
+builder.queryFields(t => ({
+  me: t.field({
+    type: meRef,
+    resolve: async (parent, args, context) => {
+      return {
+        passportNumber: 'new-passport-number',
+        niNumber: 'ni number',
+      }
+    }
+  })
+}))
