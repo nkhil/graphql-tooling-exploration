@@ -3,24 +3,14 @@ import { builder } from '../builder';
 type Me = {
   passportNumber: string,
   niNumber: string,
+  firstName: string,
 }
 
-const meRef = builder.objectRef<Me>('Me')
-
-builder.objectType(meRef, {
+const meRef = builder.objectRef<Me>('Me').implement({
   fields: t => ({
-    passportNumber: t.field({
-      type: 'String',
-      resolve: (parent) => parent.passportNumber,
-    }),
-    niNumber: t.field({
-      type: 'String',
-      resolve: (parent) => parent.niNumber,
-    }),
-    firstName: t.field({
-      type: 'String',
-      resolve: async () => Promise.resolve('Nikhil')
-    })
+    passportNumber: t.exposeString('passportNumber'),
+    niNumber: t.exposeString('niNumber'),
+    firstName: t.exposeString('firstName'),
   })
 })
 
@@ -31,6 +21,7 @@ builder.queryFields(t => ({
       return {
         passportNumber: 'new-passport-number',
         niNumber: 'ni number',
+        firstName: 'whatever',
       }
     }
   })

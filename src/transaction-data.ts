@@ -3,6 +3,7 @@ type Transaction = {
   id: string,
   merchant: string,
   reference: string,
+  secretId: string,
 }
 type Transactions = Record<string, Transaction>
 
@@ -12,7 +13,8 @@ const DATA:Transactions = {
     id: '1',
     merchant: 'Subway',
     reference: '',
-  }
+    secretId: '123',
+},
 }
 
 
