@@ -1,5 +1,4 @@
 import { builder } from '../builder';
-import { fetchNotes } from '../note-date';
 
 export type Note = {
   id: string;
@@ -20,8 +19,8 @@ NoteRef.implement({
 builder.queryFields(t => ({
   notes: t.field({
     type: [NoteRef],
-    resolve: async () => {
-      return fetchNotes()
+    resolve: async (parent, args, context) => {
+      return context.database.getAllNotes()
     }
   })
 }))
