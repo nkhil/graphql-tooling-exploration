@@ -16,5 +16,9 @@ gql`
 serial('Notes test', async (t) => {
   const response = await t.context.graphql.getAllNotes()
   t.is(response.notes.length, 1)
-  t.deepEqual(response.notes[0], { id: '01', title: '01', content: '01' })
+  const { id, title, content } = response.notes[0]
+  
+  t.is(title, '01')
+  t.is(content, '01')
+  t.is(id.length, 20)
 })

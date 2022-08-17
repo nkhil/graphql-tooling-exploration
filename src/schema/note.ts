@@ -20,7 +20,8 @@ builder.queryFields(t => ({
   notes: t.field({
     type: [NoteRef],
     resolve: async (parent, args, context) => {
-      return await context.database.addNote({ id: '01', title: '01', content: '01' })
+      const notes = await context.database.addNote({ title: '01', content: '01' })
+      return notes
     }
   })
 }))
