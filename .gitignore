@@ -2,3 +2,4 @@ node_modules
 build
 schema.graphql
 generated.ts
+.firestore-emulator

@@ -6,6 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "clean": "rimraf build",
+    "firebase-emulator": "./scripts/firebase.sh",
     "build:schema": "ts-node src/scripts/create-schema",
     "build:test": "npm run build:schema && graphql-codegen --config ./src/test/codegen.yml",
     "test": "ava",
@@ -18,6 +19,7 @@
   "dependencies": {
     "@envelop/core": "^2.0.0",
     "@faker-js/faker": "^7.3.0",
+    "@google-cloud/firestore": "^6.0.0",
     "@graphql-yoga/node": "^2.11.2",
     "@pothos/core": "^3.12.1",
     "fastify": "^4.2.0",
